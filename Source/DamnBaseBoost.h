@@ -170,8 +170,11 @@ public:
     }
 
     //==============================================================================
-    AudioProcessorEditor* createEditor() override { return nullptr; }
-    bool hasEditor() const override { return false; }
+    AudioProcessorEditor* createEditor() override {
+        return new PluginAudioProcessorEditor(*this, parameters);
+    }
+
+    bool hasEditor() const override { return true; }
 
     //==============================================================================
     const String getName() const override { return "DamnBaseBoost"; }
@@ -232,6 +235,40 @@ private:
             AudioProcessorValueTreeState& vts)
             : AudioProcessorEditor(&p), audioProcessor(p), valueTreeState(vts)
         {
+            /*
+            _SliderAttachment.reset(new SliderAttachment(valueTreeState, "", _Slider));
+            //_Slider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(_Slider);
+            */
+
+            preGainSliderAttachment.reset(new SliderAttachment(valueTreeState, "preGain", preGainSlider));
+            preGainSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(preGainSlider);
+
+            speedSliderAttachment.reset(new SliderAttachment(valueTreeState, "speed", speedSlider));
+            speedSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(speedSlider);
+
+            ratioSliderAttachment.reset(new SliderAttachment(valueTreeState, "ratio", ratioSlider));
+            ratioSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(ratioSlider);
+
+            boostFreqSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostFreq", boostFreqSlider));
+            boostFreqSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(boostFreqSlider);
+
+            boostLevelSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostLevel", boostLevelSlider));
+            boostLevelSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(boostLevelSlider);
+
+            amountSliderAttachment.reset(new SliderAttachment(valueTreeState, "amount", amountSlider));
+            amountSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(amountSlider);
+
+            postGainSliderAttachment.reset(new SliderAttachment(valueTreeState, "postGain", postGainSlider));
+            postGainSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            addAndMakeVisible(postGainSlider);
+
             setSize(width, height);
         }
 
@@ -253,7 +290,34 @@ private:
 
         PluginAudioProcessor& audioProcessor;
 
+        typedef AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+
         AudioProcessorValueTreeState& valueTreeState;
+
+        /*
+        Slider _Slider;
+        std::unique_ptr<SliderAttachment> _SliderAttachment;
+        */
+
+        Slider preGainSlider;
+        std::unique_ptr<SliderAttachment> preGainSliderAttachment;
+        Slider speedSlider;
+        std::unique_ptr<SliderAttachment> speedSliderAttachment;
+        Slider ratioSlider;
+        std::unique_ptr<SliderAttachment> ratioSliderAttachment;
+        Slider boostFreqSlider;
+        std::unique_ptr<SliderAttachment> boostFreqSliderAttachment;
+        Slider boostLevelSlider;
+        std::unique_ptr<SliderAttachment> boostLevelSliderAttachment;
+        Slider amountSlider;
+        std::unique_ptr<SliderAttachment> amountSliderAttachment;
+        Slider postGainSlider;
+        std::unique_ptr<SliderAttachment> postGainSliderAttachment;
+
+        //Rectangle<int> Area{ 0, 0, width, height };
+        Rectangle<int> preGainArea{ 0, 0, width / 7, height };
+        Rectangle<int> speedArea{ width / 7, 0, width * 2 / 7, height };
+        Rectangle<int> ratioArea{ width * 2 / 7, 0, width * 3 / 7, height };
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAudioProcessorEditor)
     };

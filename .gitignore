@@ -434,3 +434,5 @@ FodyWeavers.xsd
 **/JuceLibraryCode
 
 **/.DS_Store
+
+.vscode

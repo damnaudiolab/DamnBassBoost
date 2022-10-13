@@ -4,7 +4,7 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone,buildVST3"
               pluginManufacturer="DambAudioLab" pluginManufacturerCode="Dlab"
               pluginCode="Dabb" bundleIdentifier="org.damnaudiolab.damnbassboost"
-              pluginVST3Category="Dynamics,Fx">
+              pluginVST3Category="Dynamics,Fx" cppLanguageStandard="17">
   <MAINGROUP id="UnpQfR" name="DamnBassBoost">
     <GROUP id="{58409B57-36FF-AAAB-CC0F-892F91F0B5AF}" name="Source">
       <FILE id="BzrMr0" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
