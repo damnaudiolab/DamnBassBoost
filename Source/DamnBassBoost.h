@@ -248,7 +248,6 @@ private:
             preGainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
             preGainSlider.setTextValueSuffix(" dB");
             preGainSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            preGainSlider.setLookAndFeel(&customLookAndFeel);
             preGainSlider.setBounds(preGainArea.reduced(knobSpacing));
             addAndMakeVisible(preGainSlider);
             preGainSliderLabel.setText("Input", dontSendNotification);
@@ -261,7 +260,6 @@ private:
             speedSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
             speedSlider.setTextValueSuffix(" ms");
             speedSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            speedSlider.setLookAndFeel(&customLookAndFeel);
             speedSlider.setBounds(speedArea.reduced(knobSpacing));
             addAndMakeVisible(speedSlider);
             speedSliderLabel.setText("Speed", dontSendNotification);
@@ -274,7 +272,6 @@ private:
             ratioSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
             ratioSlider.setTextValueSuffix(" : 1");
             ratioSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            ratioSlider.setLookAndFeel(&customLookAndFeel);
             ratioSlider.setBounds(ratioArea.reduced(knobSpacing));
             addAndMakeVisible(ratioSlider);
             ratioSliderLabel.setText("Ratio", dontSendNotification);
@@ -287,7 +284,6 @@ private:
             boostFreqSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
             boostFreqSlider.setTextValueSuffix(" Hz");
             boostFreqSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            boostFreqSlider.setLookAndFeel(&customLookAndFeel);
             boostFreqSlider.setBounds(boostFreqArea.reduced(knobSpacing));
             addAndMakeVisible(boostFreqSlider);
             boostFreqSliderLabel.setText("Frequency", dontSendNotification);
@@ -299,7 +295,6 @@ private:
             boostLevelSlider.setSliderStyle(Slider::RotaryVerticalDrag);
             boostLevelSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
             boostLevelSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            boostLevelSlider.setLookAndFeel(&customLookAndFeel);
             boostLevelSlider.setBounds(boostLevelArea.reduced(knobSpacing));
             addAndMakeVisible(boostLevelSlider);
             boostLevelSliderLabel.setText("Drive", dontSendNotification);
@@ -312,7 +307,6 @@ private:
             amountSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
             amountSlider.setTextValueSuffix(" %");
             amountSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            amountSlider.setLookAndFeel(&customLookAndFeel);
             amountSlider.setBounds(amountArea.reduced(knobSpacing));
             addAndMakeVisible(amountSlider);
             amountSliderLabel.setText("Amount", dontSendNotification);
@@ -325,7 +319,6 @@ private:
             postGainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
             postGainSlider.setTextValueSuffix(" dB");
             postGainSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            postGainSlider.setLookAndFeel(&customLookAndFeel);
             postGainSlider.setBounds(postGainArea.reduced(knobSpacing));
             addAndMakeVisible(postGainSlider);
             postGainSliderLabel.setText("Output", dontSendNotification);
@@ -362,7 +355,7 @@ private:
 
         int knobWidth = width / 7;
         int knobLabelWidth = width / 10;
-        int knobLabelHeight = height / 12;
+        int knobLabelHeight = height / 10;
         int knobHeight = height * 3 / 5 - knobLabelHeight;
         int knobPosY = height - knobHeight;
         int headerHeight = knobPosY - knobLabelHeight;
@@ -400,7 +393,7 @@ private:
         Slider postGainSlider;
         Label postGainSliderLabel;
         std::unique_ptr<SliderAttachment> postGainSliderAttachment;
-        
+
         std::unique_ptr<Drawable> logo;
 
         //Rectangle<int> Area{ 0, 0, width, height };
@@ -426,7 +419,7 @@ private:
     std::atomic<float>* boostLevel = nullptr;
     std::atomic<float>* amount = nullptr;
     std::atomic<float>* postGain = nullptr;
-
+    
     enum
     {
         preCompIndex,

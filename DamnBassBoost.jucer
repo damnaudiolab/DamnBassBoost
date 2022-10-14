@@ -8,6 +8,8 @@
   <MAINGROUP id="UnpQfR" name="DamnBassBoost">
     <GROUP id="{58409B57-36FF-AAAB-CC0F-892F91F0B5AF}" name="Source">
       <GROUP id="{4D92E294-417C-32E3-DFAF-F8AD15B04E6E}" name="assets">
+        <FILE id="wJ8HYj" name="Roboto-Regular.ttf" compile="0" resource="1"
+              file="Source/assets/Roboto-Regular.ttf"/>
         <FILE id="geiWdj" name="logo.svg" compile="0" resource="1" file="Source/assets/logo.svg"/>
       </GROUP>
       <FILE id="BzrMr0" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
