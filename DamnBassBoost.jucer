@@ -4,11 +4,14 @@
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" pluginFormats="buildStandalone,buildVST3"
               pluginManufacturer="DambAudioLab" pluginManufacturerCode="Dlab"
               pluginCode="Dabb" bundleIdentifier="org.damnaudiolab.damnbassboost"
-              pluginVST3Category="Dynamics,Fx" cppLanguageStandard="17">
+              pluginVST3Category="Dynamics,Fx" cppLanguageStandard="17" companyWebsite="damnaudiolab.netlify.app">
   <MAINGROUP id="UnpQfR" name="DamnBassBoost">
     <GROUP id="{58409B57-36FF-AAAB-CC0F-892F91F0B5AF}" name="Source">
+      <GROUP id="{4D92E294-417C-32E3-DFAF-F8AD15B04E6E}" name="assets">
+        <FILE id="geiWdj" name="logo.svg" compile="0" resource="1" file="Source/assets/logo.svg"/>
+      </GROUP>
       <FILE id="BzrMr0" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="iP4VRx" name="DamnBaseBoost.h" compile="0" resource="0" file="Source/DamnBaseBoost.h"/>
+      <FILE id="lzhhTH" name="DamnBassBoost.h" compile="0" resource="0" file="Source/DamnBassBoost.h"/>
       <FILE id="z6iO0E" name="CustomLookAndFeel.h" compile="0" resource="0"
             file="Source/CustomLookAndFeel.h"/>
     </GROUP>

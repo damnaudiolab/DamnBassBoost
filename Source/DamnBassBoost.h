@@ -4,7 +4,7 @@
 
  BEGIN_JUCE_PIP_METADATA
 
-  name:             DamnBaseBoost
+  name:             DamnBassBoost
 
   dependencies:     juce_audio_basics, juce_audio_devices, juce_audio_formats, juce_audio_plugin_client, 
                     juce_audio_processors, juce_audio_utils, juce_core, juce_data_structures, juce_dsp, 
@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "CustomLookAndFeel.h"
+
 using namespace juce;
 
 //==============================================================================
@@ -32,7 +34,7 @@ public:
     PluginAudioProcessor()
         : AudioProcessor(BusesProperties().withInput("Input", AudioChannelSet::stereo())
             .withOutput("Output", AudioChannelSet::stereo())
-        ), parameters(*this, nullptr, Identifier("damnbaseboost"),
+        ), parameters(*this, nullptr, Identifier("damnbassboost"),
             {
                 std::make_unique<AudioParameterFloat>(
                     "preGain",
@@ -49,13 +51,13 @@ public:
                 std::make_unique<AudioParameterFloat>(
                     "ratio",
                     "Ratio",
-                    NormalisableRange<float>(1.0f, 20.0f, 0.01f, 0.5f),
+                    NormalisableRange<float>(1.0f, 20.0f, 0.1f, 0.5f),
                     5.0f),
 
                 std::make_unique<AudioParameterFloat>(
                     "boostFreq",
                     "BoostFreq",
-                    NormalisableRange<float>(20.0f, 300.0f, 0.05f, 0.5f),
+                    NormalisableRange<float>(20.0f, 300.0f, 0.01f, 0.5f),
                     60.0f),
 
                 std::make_unique<AudioParameterFloat>(
@@ -177,7 +179,7 @@ public:
     bool hasEditor() const override { return true; }
 
     //==============================================================================
-    const String getName() const override { return "DamnBaseBoost"; }
+    const String getName() const override { return "DamnBassBoost"; }
     bool acceptsMidi() const override { return false; }
     bool producesMidi() const override { return false; }
     double getTailLengthSeconds() const override { return 0; }
@@ -240,34 +242,100 @@ private:
             //_Slider.setSliderStyle(Slider::RotaryVerticalDrag);
             addAndMakeVisible(_Slider);
             */
-
+            
             preGainSliderAttachment.reset(new SliderAttachment(valueTreeState, "preGain", preGainSlider));
             preGainSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            preGainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            preGainSlider.setTextValueSuffix(" dB");
+            preGainSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            preGainSlider.setLookAndFeel(&customLookAndFeel);
+            preGainSlider.setBounds(preGainArea.reduced(knobSpacing));
             addAndMakeVisible(preGainSlider);
+            preGainSliderLabel.setText("Input", dontSendNotification);
+            preGainSliderLabel.attachToComponent(&preGainSlider, false);
+            preGainSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(preGainSliderLabel);
 
             speedSliderAttachment.reset(new SliderAttachment(valueTreeState, "speed", speedSlider));
             speedSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            speedSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            speedSlider.setTextValueSuffix(" ms");
+            speedSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            speedSlider.setLookAndFeel(&customLookAndFeel);
+            speedSlider.setBounds(speedArea.reduced(knobSpacing));
             addAndMakeVisible(speedSlider);
+            speedSliderLabel.setText("Speed", dontSendNotification);
+            speedSliderLabel.attachToComponent(&speedSlider, false);
+            speedSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(speedSliderLabel);
 
             ratioSliderAttachment.reset(new SliderAttachment(valueTreeState, "ratio", ratioSlider));
             ratioSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            ratioSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            ratioSlider.setTextValueSuffix(" : 1");
+            ratioSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            ratioSlider.setLookAndFeel(&customLookAndFeel);
+            ratioSlider.setBounds(ratioArea.reduced(knobSpacing));
             addAndMakeVisible(ratioSlider);
+            ratioSliderLabel.setText("Ratio", dontSendNotification);
+            ratioSliderLabel.attachToComponent(&ratioSlider, false);
+            ratioSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(ratioSliderLabel);
 
             boostFreqSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostFreq", boostFreqSlider));
             boostFreqSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            boostFreqSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            boostFreqSlider.setTextValueSuffix(" Hz");
+            boostFreqSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            boostFreqSlider.setLookAndFeel(&customLookAndFeel);
+            boostFreqSlider.setBounds(boostFreqArea.reduced(knobSpacing));
             addAndMakeVisible(boostFreqSlider);
+            boostFreqSliderLabel.setText("Frequency", dontSendNotification);
+            boostFreqSliderLabel.attachToComponent(&boostFreqSlider, false);
+            boostFreqSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(boostFreqSliderLabel);
 
             boostLevelSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostLevel", boostLevelSlider));
             boostLevelSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            boostLevelSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            boostLevelSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            boostLevelSlider.setLookAndFeel(&customLookAndFeel);
+            boostLevelSlider.setBounds(boostLevelArea.reduced(knobSpacing));
             addAndMakeVisible(boostLevelSlider);
+            boostLevelSliderLabel.setText("Drive", dontSendNotification);
+            boostLevelSliderLabel.attachToComponent(&boostLevelSlider, false);
+            boostLevelSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(boostLevelSliderLabel);
 
             amountSliderAttachment.reset(new SliderAttachment(valueTreeState, "amount", amountSlider));
             amountSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            amountSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            amountSlider.setTextValueSuffix(" %");
+            amountSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            amountSlider.setLookAndFeel(&customLookAndFeel);
+            amountSlider.setBounds(amountArea.reduced(knobSpacing));
             addAndMakeVisible(amountSlider);
+            amountSliderLabel.setText("Amount", dontSendNotification);
+            amountSliderLabel.attachToComponent(&amountSlider, false);
+            amountSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(amountSliderLabel);
 
             postGainSliderAttachment.reset(new SliderAttachment(valueTreeState, "postGain", postGainSlider));
             postGainSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            postGainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            postGainSlider.setTextValueSuffix(" dB");
+            postGainSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            postGainSlider.setLookAndFeel(&customLookAndFeel);
+            postGainSlider.setBounds(postGainArea.reduced(knobSpacing));
             addAndMakeVisible(postGainSlider);
+            postGainSliderLabel.setText("Output", dontSendNotification);
+            postGainSliderLabel.attachToComponent(&postGainSlider, false);
+            postGainSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(postGainSliderLabel);
+
+            logo = Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
+            addAndMakeVisible(logo.get());
+            logo->setTransformToFit(headerArea.reduced(20).toFloat(), RectanglePlacement::centred);
 
             setSize(width, height);
         }
@@ -276,7 +344,9 @@ private:
 
         void paint(Graphics& g) override
         {
-            g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
+            g.fillAll(customLookAndFeel.colourPalette[CustomLookAndFeel::grey]);
+            g.setColour(customLookAndFeel.colourPalette[CustomLookAndFeel::black]);
+            g.fillRect(headerArea);
         }
 
         void resized() override
@@ -285,8 +355,18 @@ private:
         }
 
     private:
-        int width = 640;
-        int height = 240;
+        CustomLookAndFeel customLookAndFeel;
+
+        int width = 800;
+        int height = 270;
+
+        int knobWidth = width / 7;
+        int knobLabelWidth = width / 10;
+        int knobLabelHeight = height / 12;
+        int knobHeight = height * 3 / 5 - knobLabelHeight;
+        int knobPosY = height - knobHeight;
+        int headerHeight = knobPosY - knobLabelHeight;
+        int knobSpacing = (knobWidth / 20);
 
         PluginAudioProcessor& audioProcessor;
 
@@ -300,24 +380,39 @@ private:
         */
 
         Slider preGainSlider;
+        Label preGainSliderLabel;
         std::unique_ptr<SliderAttachment> preGainSliderAttachment;
         Slider speedSlider;
+        Label speedSliderLabel;
         std::unique_ptr<SliderAttachment> speedSliderAttachment;
         Slider ratioSlider;
+        Label ratioSliderLabel;
         std::unique_ptr<SliderAttachment> ratioSliderAttachment;
         Slider boostFreqSlider;
+        Label boostFreqSliderLabel;
         std::unique_ptr<SliderAttachment> boostFreqSliderAttachment;
         Slider boostLevelSlider;
+        Label boostLevelSliderLabel;
         std::unique_ptr<SliderAttachment> boostLevelSliderAttachment;
         Slider amountSlider;
+        Label amountSliderLabel;
         std::unique_ptr<SliderAttachment> amountSliderAttachment;
         Slider postGainSlider;
+        Label postGainSliderLabel;
         std::unique_ptr<SliderAttachment> postGainSliderAttachment;
+        
+        std::unique_ptr<Drawable> logo;
 
         //Rectangle<int> Area{ 0, 0, width, height };
-        Rectangle<int> preGainArea{ 0, 0, width / 7, height };
-        Rectangle<int> speedArea{ width / 7, 0, width * 2 / 7, height };
-        Rectangle<int> ratioArea{ width * 2 / 7, 0, width * 3 / 7, height };
+        Rectangle<int> headerArea{ 0, 0, width, headerHeight };
+
+        Rectangle<int> preGainArea{ 0, knobPosY, knobWidth, knobHeight };
+        Rectangle<int> speedArea{ knobWidth, knobPosY, knobWidth, knobHeight };
+        Rectangle<int> ratioArea{ knobWidth * 2, knobPosY, knobWidth, knobHeight };
+        Rectangle<int> boostFreqArea{ knobWidth * 3, knobPosY, knobWidth, knobHeight };
+        Rectangle<int> boostLevelArea{ knobWidth * 4, knobPosY, knobWidth, knobHeight };
+        Rectangle<int> amountArea{ knobWidth * 5, knobPosY, knobWidth, knobHeight };
+        Rectangle<int> postGainArea{ knobWidth * 6, knobPosY, knobWidth, knobHeight };
 
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PluginAudioProcessorEditor)
     };

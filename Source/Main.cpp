@@ -1,6 +1,6 @@
 #include <JuceHeader.h>
 
-#include "DamnBaseBoost.h"
+#include "DamnBassBoost.h"
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
