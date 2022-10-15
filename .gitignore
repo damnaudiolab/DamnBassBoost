@@ -436,3 +436,5 @@ FodyWeavers.xsd
 **/.DS_Store
 
 .vscode
+
+**/Release
