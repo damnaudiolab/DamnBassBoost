@@ -110,7 +110,7 @@ public:
 
         auto& boostLpf = processors.get<boostLpfIndex>();
         boostLpf.setMode(dsp::LadderFilterMode::LPF12);
-        boostLpf.setResonance(0.7f);
+        boostLpf.setResonance(0.0f);
 
         mixDryWet.setMixingRule(dsp::DryWetMixingRule::linear);
         mixDryWet.setWetMixProportion(0.5f);
@@ -158,7 +158,8 @@ public:
         boostLpf.setDrive(Decibels::decibelsToGain(boostGainDecibels));
 
         auto& boostAmp = processors.get<boostAmpIndex>();
-        boostAmp.setGainLinear(*amount);
+        float boostAmount = *amount * Decibels::decibelsToGain(102.0f * (0.7f - 1.0f / *ratio)) * 0.75f;
+        boostAmp.setGainLinear(boostAmount);
 
         postAmp.setGainDecibels(*postGain + 6.0f);
 
