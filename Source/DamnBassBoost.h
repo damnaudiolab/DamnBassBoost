@@ -23,6 +23,7 @@
 #pragma once
 
 #include "CustomLookAndFeel.h"
+#include "ParameterUtil.h"
 
 using namespace juce;
 
@@ -61,10 +62,10 @@ public:
                     60.0f),
 
                 std::make_unique<AudioParameterFloat>(
-                    "boostLevel",
-                    "BoostLevel",
-                    NormalisableRange<float>(1.0f, 10.0f, 0.01f),
-                    1.0f),
+                    "boostDrive",
+                    "BoostDrive",
+                    NormalisableRange<float>(0.0f, 12.0f, 0.01f),
+                    0.0f),
 
                 std::make_unique<AudioParameterFloat>(
                     "amount",
@@ -84,7 +85,7 @@ public:
         speed = parameters.getRawParameterValue("speed");
         ratio = parameters.getRawParameterValue("ratio");
         boostFreq = parameters.getRawParameterValue("boostFreq");
-        boostLevel = parameters.getRawParameterValue("boostLevel");
+        boostDrive = parameters.getRawParameterValue("boostDrive");
         amount = parameters.getRawParameterValue("amount");
         postGain = parameters.getRawParameterValue("postGain");
     }
@@ -153,7 +154,8 @@ public:
 
         auto& boostLpf = processors.get<boostLpfIndex>();
         boostLpf.setCutoffFrequencyHz(*boostFreq);
-        boostLpf.setDrive(*boostLevel);
+        float boostGainDecibels = *boostDrive;
+        boostLpf.setDrive(Decibels::decibelsToGain(boostGainDecibels));
 
         auto& boostAmp = processors.get<boostAmpIndex>();
         boostAmp.setGainLinear(*amount);
@@ -243,18 +245,52 @@ private:
             addAndMakeVisible(_Slider);
             */
             
+            sliderInitializer.setup(
+                Slider::RotaryVerticalDrag,
+                Slider::TextBoxBelow,
+                knobLabelWidth,
+                knobLabelHeight,
+                false,
+                false,
+                Justification::centred
+            );
+
             preGainSliderAttachment.reset(new SliderAttachment(valueTreeState, "preGain", preGainSlider));
-            preGainSlider.setSliderStyle(Slider::RotaryVerticalDrag);
-            preGainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
-            preGainSlider.setTextValueSuffix(" dB");
-            preGainSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            preGainSlider.setBounds(preGainArea.reduced(knobSpacing));
+            sliderInitializer.init(preGainSlider, preGainSliderLabel, "Input", "dB", preGainArea.reduced(knobSpacing));
             addAndMakeVisible(preGainSlider);
-            preGainSliderLabel.setText("Input", dontSendNotification);
-            preGainSliderLabel.attachToComponent(&preGainSlider, false);
-            preGainSliderLabel.setJustificationType(Justification::centred);
             addAndMakeVisible(preGainSliderLabel);
 
+            speedSliderAttachment.reset(new SliderAttachment(valueTreeState, "speed", speedSlider));
+            sliderInitializer.init(speedSlider, speedSliderLabel, "Speed", "ms", speedArea.reduced(knobSpacing));
+            addAndMakeVisible(speedSlider);
+            addAndMakeVisible(speedSliderLabel);
+
+            ratioSliderAttachment.reset(new SliderAttachment(valueTreeState, "ratio", ratioSlider));
+            sliderInitializer.init(ratioSlider, ratioSliderLabel, "Ratio", " : 1", ratioArea.reduced(knobSpacing));
+            addAndMakeVisible(ratioSlider);
+            addAndMakeVisible(ratioSliderLabel);
+
+            boostFreqSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostFreq", boostFreqSlider));
+            sliderInitializer.init(boostFreqSlider, boostFreqSliderLabel, "Freq", "Hz", boostFreqArea.reduced(knobSpacing));
+            addAndMakeVisible(boostFreqSlider);
+            addAndMakeVisible(boostFreqSliderLabel);
+
+            boostDriveSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostDrive", boostDriveSlider));
+            sliderInitializer.init(boostDriveSlider, boostDriveSliderLabel, "Drive", "dB", boostDriveArea.reduced(knobSpacing));
+            addAndMakeVisible(boostDriveSlider);
+            addAndMakeVisible(boostDriveSliderLabel);
+
+            amountSliderAttachment.reset(new SliderAttachment(valueTreeState, "amount", amountSlider));
+            sliderInitializer.init(amountSlider, amountSliderLabel, "Amount", " %", amountArea.reduced(knobSpacing));
+            addAndMakeVisible(amountSlider);
+            addAndMakeVisible(amountSliderLabel);
+
+            postGainSliderAttachment.reset(new SliderAttachment(valueTreeState, "postGain", postGainSlider));
+            sliderInitializer.init(postGainSlider, postGainSliderLabel, "Output", "dB", postGainArea.reduced(knobSpacing));
+            addAndMakeVisible(postGainSlider);
+            addAndMakeVisible(postGainSliderLabel);
+
+            /*
             speedSliderAttachment.reset(new SliderAttachment(valueTreeState, "speed", speedSlider));
             speedSlider.setSliderStyle(Slider::RotaryVerticalDrag);
             speedSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
@@ -291,16 +327,16 @@ private:
             boostFreqSliderLabel.setJustificationType(Justification::centred);
             addAndMakeVisible(boostFreqSliderLabel);
 
-            boostLevelSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostLevel", boostLevelSlider));
-            boostLevelSlider.setSliderStyle(Slider::RotaryVerticalDrag);
-            boostLevelSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
-            boostLevelSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
-            boostLevelSlider.setBounds(boostLevelArea.reduced(knobSpacing));
-            addAndMakeVisible(boostLevelSlider);
-            boostLevelSliderLabel.setText("Drive", dontSendNotification);
-            boostLevelSliderLabel.attachToComponent(&boostLevelSlider, false);
-            boostLevelSliderLabel.setJustificationType(Justification::centred);
-            addAndMakeVisible(boostLevelSliderLabel);
+            boostDriveSliderAttachment.reset(new SliderAttachment(valueTreeState, "boostDrive", boostDriveSlider));
+            boostDriveSlider.setSliderStyle(Slider::RotaryVerticalDrag);
+            boostDriveSlider.setTextBoxStyle(Slider::TextBoxBelow, false, knobLabelWidth, knobLabelHeight);
+            boostDriveSlider.setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
+            boostDriveSlider.setBounds(boostDriveArea.reduced(knobSpacing));
+            addAndMakeVisible(boostDriveSlider);
+            boostDriveSliderLabel.setText("Drive", dontSendNotification);
+            boostDriveSliderLabel.attachToComponent(&boostDriveSlider, false);
+            boostDriveSliderLabel.setJustificationType(Justification::centred);
+            addAndMakeVisible(boostDriveSliderLabel);
 
             amountSliderAttachment.reset(new SliderAttachment(valueTreeState, "amount", amountSlider));
             amountSlider.setSliderStyle(Slider::RotaryVerticalDrag);
@@ -325,6 +361,7 @@ private:
             postGainSliderLabel.attachToComponent(&postGainSlider, false);
             postGainSliderLabel.setJustificationType(Justification::centred);
             addAndMakeVisible(postGainSliderLabel);
+            */
 
             logo = Drawable::createFromImageData(BinaryData::logo_svg, BinaryData::logo_svgSize);
             addAndMakeVisible(logo.get());
@@ -349,6 +386,8 @@ private:
 
     private:
         CustomLookAndFeel customLookAndFeel;
+
+        SliderInitializer sliderInitializer;
 
         int width = 800;
         int height = 270;
@@ -384,9 +423,9 @@ private:
         Slider boostFreqSlider;
         Label boostFreqSliderLabel;
         std::unique_ptr<SliderAttachment> boostFreqSliderAttachment;
-        Slider boostLevelSlider;
-        Label boostLevelSliderLabel;
-        std::unique_ptr<SliderAttachment> boostLevelSliderAttachment;
+        Slider boostDriveSlider;
+        Label boostDriveSliderLabel;
+        std::unique_ptr<SliderAttachment> boostDriveSliderAttachment;
         Slider amountSlider;
         Label amountSliderLabel;
         std::unique_ptr<SliderAttachment> amountSliderAttachment;
@@ -403,7 +442,7 @@ private:
         Rectangle<int> speedArea{ knobWidth, knobPosY, knobWidth, knobHeight };
         Rectangle<int> ratioArea{ knobWidth * 2, knobPosY, knobWidth, knobHeight };
         Rectangle<int> boostFreqArea{ knobWidth * 3, knobPosY, knobWidth, knobHeight };
-        Rectangle<int> boostLevelArea{ knobWidth * 4, knobPosY, knobWidth, knobHeight };
+        Rectangle<int> boostDriveArea{ knobWidth * 4, knobPosY, knobWidth, knobHeight };
         Rectangle<int> amountArea{ knobWidth * 5, knobPosY, knobWidth, knobHeight };
         Rectangle<int> postGainArea{ knobWidth * 6, knobPosY, knobWidth, knobHeight };
 
@@ -416,7 +455,7 @@ private:
     std::atomic<float>* speed = nullptr;
     std::atomic<float>* ratio = nullptr;
     std::atomic<float>* boostFreq = nullptr;
-    std::atomic<float>* boostLevel = nullptr;
+    std::atomic<float>* boostDrive = nullptr;
     std::atomic<float>* amount = nullptr;
     std::atomic<float>* postGain = nullptr;
     

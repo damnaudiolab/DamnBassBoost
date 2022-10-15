@@ -90,6 +90,8 @@ public:
     {
         auto* l = LookAndFeel_V4::createSliderTextBox(slider);
         l->setFont(getCustomFont().withHeight(fontSize));
+        l->setColour(Label::textWhenEditingColourId, colourPalette[white]);
+        l->setColour(Label::backgroundWhenEditingColourId, colourPalette[grey]);
         return l;
     }
 

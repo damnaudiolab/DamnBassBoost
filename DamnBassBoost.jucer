@@ -7,7 +7,7 @@
               pluginVST3Category="Dynamics,Fx" cppLanguageStandard="17" companyWebsite="damnaudiolab.netlify.app">
   <MAINGROUP id="UnpQfR" name="DamnBassBoost">
     <GROUP id="{58409B57-36FF-AAAB-CC0F-892F91F0B5AF}" name="Source">
-      <GROUP id="{4D92E294-417C-32E3-DFAF-F8AD15B04E6E}" name="assets">
+      <GROUP id="{4D92E294-417C-32E3-DFAF-F8AD15B04E6E}" name="Assets">
         <FILE id="wJ8HYj" name="Roboto-Regular.ttf" compile="0" resource="1"
               file="Source/assets/Roboto-Regular.ttf"/>
         <FILE id="geiWdj" name="logo.svg" compile="0" resource="1" file="Source/assets/logo.svg"/>
@@ -16,6 +16,7 @@
       <FILE id="lzhhTH" name="DamnBassBoost.h" compile="0" resource="0" file="Source/DamnBassBoost.h"/>
       <FILE id="z6iO0E" name="CustomLookAndFeel.h" compile="0" resource="0"
             file="Source/CustomLookAndFeel.h"/>
+      <FILE id="iwVI15" name="ParameterUtil.h" compile="0" resource="0" file="Source/ParameterUtil.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
